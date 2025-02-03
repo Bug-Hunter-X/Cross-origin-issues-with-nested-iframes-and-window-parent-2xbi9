@@ -1,0 +1,17 @@
+<p>The solution involves avoiding direct access using <code>window.parent</code> across different origins.  Instead, utilize the <code>postMessage</code> API for secure inter-origin communication.</p> <p><strong>Example (iframe2.html):</strong></p> <pre><code class="javascript">window.addEventListener('message', function(event) {
+  // Check the origin to ensure it's from the expected source
+  if (event.origin === "https://example.com") {
+    // Process the received message
+    console.log('Received message:', event.data);
+  }
+});
+
+// Send a message to the parent frame
+window.parent.postMessage('Hello from iframe2!', '*'); // Use '*' carefully, specify origin if possible
+</code></pre> <p><strong>Example (iframe1.html or parent):</strong></p> <pre><code class="javascript">window.addEventListener('message', function(event) {
+  // Check the origin to ensure it's from the expected source
+  if (event.origin === "https://another-example.com") {
+    // Process the received message
+    console.log('Received message from iframe2:', event.data);
+  }
+});</code></pre> <p>This approach ensures safe and controlled communication between the different origins, resolving the CORS issues and preventing potential security vulnerabilities.</p>
